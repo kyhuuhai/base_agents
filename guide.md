@@ -1,33 +1,45 @@
 # Guide: Cài Đặt, Vận Hành & Khởi Tạo Dự Án Mới Từ Plan
 
-Hướng dẫn chi tiết quy trình cài đặt 1 chạm (`install.sh`), tích hợp MCP Tools, và quy trình khởi tạo dự án mới từ `plan.md`.
+Hướng dẫn chi tiết quy trình cài đặt 1 chạm (`install.sh`), triển khai trên **macOS** và **VPS Linux (CentOS 9, Amazon Linux ec2-user, Ubuntu)**, tích hợp MCP Tools (CodeGraph, Obsidian), và quy trình khởi tạo dự án mới từ `plan.md`.
 
 ---
 
 ## 1. Cài Đặt 1 Chạm Với `install.sh`
 
-### 1.1. Cài đặt Toàn Cục Cho Máy (Machine-level Global Setup)
-Áp dụng Rules, Skills và cấu hình MCP tự động cho tất cả các dự án mở trên máy:
+Script `install.sh` hỗ trợ tự động nhận diện OS, tự cài đặt/cấu hình **Node.js**, **CodeGraph CLI**, **Obsidian MCP Server** và **Global Rules/Skills**.
+
+### 1.1. Cài đặt trên macOS (Local Machine)
 ```bash
+# Cài đặt toàn cục (Global)
+./install.sh --global
+
+# Hoặc cài đặt cục bộ cho 1 dự án
+./install.sh --project /path/to/my-project
+```
+
+### 1.2. Cài đặt trên VPS Linux (CentOS 9, Amazon Linux / `ec2-user`, Ubuntu)
+Trên VPS không có giao diện đồ họa (headless server):
+```bash
+# 1. Clone repository về VPS:
+git clone git@github-kyhuuhai:kyhuuhai/base_agents.git base_agents
+cd base_agents
+
+# 2. Cấp quyền thực thi và chạy cài đặt toàn cục:
+chmod +x ./install.sh
 ./install.sh --global
 ```
-- Tự động copy `GEMINI.md` vào `~/.gemini/config/GEMINI.md`.
-- Cài đặt toàn bộ 8 skills vào `~/.gemini/config/skills/`.
-- Tự động quét và cấu hình MCP CodeGraph & Obsidian Vault vào `~/.gemini/config/mcp_config.json`.
 
-### 1.2. Cài đặt Cục Bộ Cho 1 Dự Án Cụ Thể (Project-level Setup)
-Đồng bộ rules và skills trực tiếp vào thư mục dự án mới:
-```bash
-./install.sh --project /path/to/your-new-project
-```
+> [!NOTE]
+> **Cơ chế hoạt động trên VPS Linux**:
+> 1. **Node.js & npx**: Script tự động cài Node.js 20 LTS qua `dnf`/`yum` hoặc `nvm` nếu máy chưa có.
+> 2. **CodeGraph CLI**: Tự động tải binary từ `https://codegraph.dev/install.sh` và gắn link vào `$HOME/.local/bin/codegraph` cùng `$PATH`.
+> 3. **Obsidian trên VPS**: Bản chất Obsidian Vault là một thư mục Markdown (`$HOME/obsidian_vault`). MCP Server sử dụng `@modelcontextprotocol/server-filesystem` chạy qua `npx` dạng headless 100%, không cần cài app Obsidian Desktop GUI. Bạn có thể đồng bộ vault giữa máy cá nhân và VPS qua Git!
 
 ---
 
 ## 2. Quy Trình Khởi Tạo & Triển Khai Dự Án Mới Từ `plan.md`
 
-Khi bắt đầu một dự án mới:
-
-### Bước 1: Chuẩn bị thư mục dự án
+### Bước 1: Khởi tạo thư mục dự án mới
 ```bash
 mkdir -p /path/to/my-new-project
 cd /path/to/my-new-project
@@ -36,16 +48,16 @@ git init
 
 ### Bước 2: Đồng bộ Base Agents & Template
 ```bash
-# Cài đặt rules và skills từ base_agents
-/Users/krylot/Documents/Projects/agent/install.sh --project .
+# Cài đặt rules và skills từ base_agents vào dự án:
+/path/to/base_agents/install.sh --project .
 
-# (Tùy chọn) Khởi tạo khung Starter Monorepo nếu làm dự án mới từ đầu
-cp -R /Users/krylot/Documents/Projects/agent/templates/monorepo-starter/* .
-cp /Users/krylot/Documents/Projects/agent/templates/monorepo-starter/.env.example .env
+# (Tùy chọn) Copy khung Starter Monorepo nếu dựng dự án từ đầu:
+cp -R /path/to/base_agents/templates/monorepo-starter/* .
+cp /path/to/base_agents/templates/monorepo-starter/.env.example .env
 ```
 
 ### Bước 3: Đưa `plan.md` vào dự án và Kích hoạt AI Agent
-Tạo file `plan.md` chứa đặc tả nghiệp vụ của dự án tại root, sau đó gửi prompt cho Agent:
+Tạo file `plan.md` mô tả các yêu cầu nghiệp vụ của dự án tại root, sau đó gửi prompt cho Agent:
 ```markdown
 Hãy đọc file plan.md và tiến hành phát triển toàn bộ dự án theo đúng Technical Stack Blueprint:
 - Backend NestJS v10+ (Modular, Prisma ORM, Redis, DTO validation)
@@ -64,20 +76,30 @@ Mỗi khi khởi tạo hoặc cập nhật lớn mã nguồn dự án:
 cd /path/to/project
 codegraph index
 ```
-AI Agent sẽ tự động ưu tiên gọi MCP `codegraph_explore` để hiểu kiến trúc và dynamic call paths.
+AI Agent sẽ tự động phát hiện thư mục `.codegraph/` và ưu tiên gọi MCP `codegraph_explore` để tra cứu call graph và symbols.
 
 ### 3.2. Cấu hình Obsidian Vault
-Đường dẫn Vault mặc định: `/Users/krylot/Documents/Obsidian Vault`.
-Để thay đổi đường dẫn Vault, cập nhật trực tiếp tại `~/.gemini/config/mcp_config.json`:
+Đường dẫn Vault mặc định:
+- macOS: `~/Documents/Obsidian Vault`
+- Linux / VPS: `~/obsidian_vault`
+
+Cấu hình MCP lưu tại `~/.gemini/config/mcp_config.json`:
 ```json
 {
   "mcpServers": {
+    "codegraph": {
+      "command": "/Users/krylot/.local/bin/codegraph",
+      "args": [
+        "serve",
+        "--mcp"
+      ]
+    },
     "obsidian": {
-      "command": "/usr/local/bin/npx",
+      "command": "npx",
       "args": [
         "-y",
         "@modelcontextprotocol/server-filesystem",
-        "/DUONG_DAN_MOI/Obsidian Vault"
+        "/path/to/obsidian_vault"
       ]
     }
   }
@@ -86,15 +108,13 @@ AI Agent sẽ tự động ưu tiên gọi MCP `codegraph_explore` để hiểu 
 
 ---
 
-## 4. Quy Chuẩn Đồng Bộ Git & Đẩy Lên GitHub
+## 4. Quy Chuẩn Đồng Bộ Git Lên GitHub
 
-Đồng bộ các cập nhật của `base_agents` lên GitHub repository:
 ```bash
 cd /Users/krylot/Documents/Projects/agent
 git add .
-git commit -m "feat: setup base_agents with rules, skills, MCP, and starter template"
-git branch -M main
-git push -u origin main
+git commit -m "feat: upgrade universal installer for CentOS 9, ec2-user and macOS"
+git push origin main
 ```
 
 ---
@@ -103,11 +123,10 @@ git push -u origin main
 
 - **AI Agent không nhận Rules**:
   - Đảm bảo `~/.gemini/config/GEMINI.md` hoặc `GEMINI.md` ở root dự án tồn tại.
-  - Mở lại IDE / Workspace để reload context.
+  - Khởi động lại IDE / Agent session để tải lại ngữ cảnh.
+- **CodeGraph báo `command not found` sau khi cài đặt**:
+  - Chạy `source ~/.bashrc` (hoặc `source ~/.zshrc`) để cập nhật `$PATH` chứa `~/.local/bin`.
 - **Lỗi permission khi chạy `install.sh`**:
   ```bash
   chmod +x ./install.sh
   ```
-- **Lỗi Docker port collision**:
-  - Kiểm tra các container đang chạy: `docker ps`.
-  - Thay đổi port mapping trong `.env` hoặc `docker-compose.yml`.
