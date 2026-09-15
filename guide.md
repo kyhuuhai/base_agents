@@ -78,33 +78,11 @@ codegraph index
 ```
 AI Agent sẽ tự động phát hiện thư mục `.codegraph/` và ưu tiên gọi MCP `codegraph_explore` để tra cứu call graph và symbols.
 
-### 3.2. Cấu hình Obsidian Vault
-Đường dẫn Vault mặc định:
-- macOS: `~/Documents/Obsidian Vault`
-- Linux / VPS: `~/obsidian_vault`
+### 3.2. Quản Lý Tài Liệu Theo Mô Hình Local-First (Docs-as-Code)
+- **Tài liệu từng dự án**: Được Agent lưu trữ trực tiếp trong thư mục `specs/` của repository (ví dụ: `specs/architecture.md`, `specs/SPEC-1-auth.md`).
+- **Xem trên Obsidian Desktop**: Không cần cài đặt gì trên VPS, trên máy cá nhân chỉ cần mở Obsidian Desktop chọn **"Open folder as vault"** trỏ thẳng vào thư mục dự án để xem Knowledge Graph và Alert Callouts độc lập.
+- **Global Vault (Tùy chọn)**: Dành cho ghi chú cá nhân toàn cục (`~/Documents/Obsidian Vault` hoặc `~/obsidian_vault` trên VPS) thông qua MCP Server lưu tại `~/.gemini/config/mcp_config.json`.
 
-Cấu hình MCP lưu tại `~/.gemini/config/mcp_config.json`:
-```json
-{
-  "mcpServers": {
-    "codegraph": {
-      "command": "/Users/krylot/.local/bin/codegraph",
-      "args": [
-        "serve",
-        "--mcp"
-      ]
-    },
-    "obsidian": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "/path/to/obsidian_vault"
-      ]
-    }
-  }
-}
-```
 
 ---
 

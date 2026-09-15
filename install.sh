@@ -116,8 +116,8 @@ ensure_obsidian_vault() {
     fi
   fi
 
-  mkdir -p "${VAULT_DIR}"
-  echo -e "${GREEN}✓ Obsidian Vault Path: ${VAULT_DIR}${NC}"
+  mkdir -p "${VAULT_DIR}/Projects"
+  echo -e "${GREEN}✓ Obsidian Vault Path: ${VAULT_DIR} (Projects folder ready)${NC}"
 }
 
 # 5. Cài đặt Global Rules, Skills & Cấu hình MCP
@@ -186,17 +186,37 @@ install_project() {
   echo -e "\n${YELLOW}==> Cài đặt Rules & Skills vào dự án: ${TARGET_DIR}...${NC}"
   mkdir -p "${TARGET_DIR}/.agents/skills"
   mkdir -p "${TARGET_DIR}/specs"
+  touch "${TARGET_DIR}/specs/.gitkeep"
+
 
   cp "${SCRIPT_DIR}/GEMINI.md" "${TARGET_DIR}/GEMINI.md"
   if [ ! -f "${TARGET_DIR}/.gitignore" ]; then
     cp "${SCRIPT_DIR}/.gitignore" "${TARGET_DIR}/.gitignore"
+  else
+    if ! grep -q '\.codegraph/' "${TARGET_DIR}/.gitignore" 2>/dev/null; then
+      echo -e "\n# CodeGraph Index DB\n.codegraph/" >> "${TARGET_DIR}/.gitignore"
+    fi
   fi
 
   if [ -d "${SCRIPT_DIR}/skills" ]; then
     cp -R "${SCRIPT_DIR}/skills/"* "${TARGET_DIR}/.agents/skills/"
   fi
 
-  echo -e "${GREEN}✓ Đã copy GEMINI.md, .gitignore, specs/, và toàn bộ skills vào ${TARGET_DIR}.${NC}"
+  # Khởi tạo CodeGraph index cho dự án nếu có CLI
+  CODEGRAPH_BIN="$(command -v codegraph || echo "$HOME/.local/bin/codegraph")"
+  if [ -x "$CODEGRAPH_BIN" ]; then
+    if [ ! -d "${TARGET_DIR}/.codegraph" ]; then
+      echo -e "${CYAN}Khởi tạo CodeGraph index cho dự án tại: ${TARGET_DIR}...${NC}"
+      (cd "${TARGET_DIR}" && "$CODEGRAPH_BIN" init 2>/dev/null || true)
+      echo -e "${GREEN}✓ Đã khởi tạo thư mục .codegraph/ cho dự án.${NC}"
+    else
+      echo -e "${GREEN}✓ Đã phát hiện thư mục .codegraph/ trong dự án.${NC}"
+    fi
+  else
+    echo -e "${YELLOW}Lưu ý: Chưa phát hiện CodeGraph CLI. Hãy chạy './install.sh --global' để kích hoạt CodeGraph.${NC}"
+  fi
+
+  echo -e "${GREEN}✓ Đã copy GEMINI.md, .gitignore, specs/, skills và cấu hình CodeGraph vào ${TARGET_DIR}.${NC}"
   echo -e "${GREEN}🎉 Dự án đã sẵn sàng làm việc với AI Agent!${NC}\n"
 }
 

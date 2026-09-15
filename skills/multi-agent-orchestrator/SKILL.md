@@ -52,16 +52,16 @@ Hệ thống phối hợp đa tác tử (Multi-Agent Orchestration) chuẩn hóa
 └──────┬───────┘
        │ [All Security Passed]
        ▼
-[Cập nhật readme.md / guide.md & Xuất Obsidian Document & Bàn giao]
+[Cập nhật readme.md / guide.md & Xuất tài liệu specs/ & Bàn giao]
 ```
 
 | Subagent | Tên định danh | Vai trò & Trọng tâm | Tools được phép | Môi trường |
 |---|---|---|---|---|
 | **PO Agent** | `po-agent` | Làm rõ yêu cầu, phân tích nghiệp vụ, viết User Stories & AC | Read, Grep, Codegraph, Ask Question | Session Chat / Specs Artifact |
-| **Architect Agent** | `architect-agent` | Thiết kế Prisma Schema, API DTOs, luồng dữ liệu, Monorepo | Read, Grep, Codegraph, Obsidian | Session Chat / Artifact / Obsidian |
+| **Architect Agent** | `architect-agent` | Thiết kế Prisma Schema, API DTOs, luồng dữ liệu, Monorepo | Read, Write, Grep, Codegraph | Session Chat / `specs/` |
 | **Fullstack Dev Agent** | `fullstack-dev-agent` | Lập Implementation Plan, viết code tuần tự API -> Web | Read, Write, Edit, Codegraph, Command | Monorepo Workspace |
 | **QA / Tester Agent** | `tester-agent` | Kích hoạt skill `fullstack-smoke-verifier`: Chạy 3 Smoke Tests (Auth Guard, Zero-Hardcode, Viewport) | Read, Write, Edit, Command (Docker exec / Playwright) | Docker Compose / Headless Browser |
-| **Security & DevOps Agent** | `security-devops-agent` | Audit bảo mật, an toàn dữ liệu, verify Docker & env | Read, Grep, Command, Obsidian | Docker / Local Environment / Obsidian |
+| **Security & DevOps Agent** | `security-devops-agent` | Audit bảo mật, an toàn dữ liệu, verify Docker & env | Read, Write, Grep, Command | Docker / Local Environment |
 
 ---
 
@@ -71,16 +71,18 @@ Hệ thống phối hợp đa tác tử (Multi-Agent Orchestration) chuẩn hóa
 - Mọi Subagent (PO, Architect, Developer, Tester, Security) trước khi phân tích hoặc chỉnh sửa file BẮT BUỘC phải dùng CodeGraph (`codegraph_explore` MCP hoặc CLI `codegraph explore "<query>"`) nếu repo có `.codegraph/`.
 - **Đồng bộ sau khi code**: Sau khi Fullstack Developer hoàn thành việc thêm/sửa file mã nguồn (Source Code), BẮT BUỘC chạy `codegraph sync` để cập nhật lại Graph cho Tester, Security và các phiên làm việc tiếp theo.
 
-### 2.2. Tự Động Xuất Bản Tài Liệu Chuẩn Obsidian (Obsidian Vault Integration)
-- Khi hoàn thành thiết kế kiến trúc hoặc bàn giao tính năng, Agent BẮT BUỘC dùng MCP `obsidian` (`write_file` / `create_directory`) để lưu trữ một bản ghi tài liệu vào Obsidian Vault (thư mục `Projects/<Project_Name>/specs/` hoặc cấu trúc Vault hiện hành).
-- Nội dung tài liệu bao gồm: Tổng quan tính năng, Data Flow/Architecture Diagram (Mermaid), Danh sách API/DTOs, và Runbook hướng dẫn chạy/test.
+### 2.2. Tự Động Xuất Bản Tài Liệu Chuẩn Obsidian (Local-First Docs-as-Code)
+- **Lưu trực tiếp trong dự án (`specs/`)**: Toàn bộ tài liệu kiến trúc, spec tính năng và runbook BẮT BUỘC được lưu trữ trực tiếp bên trong thư mục `specs/` của repository (ví dụ: `specs/architecture.md`, `specs/SPEC-{number}-{tên}.md`).
+- **Tuân thủ chuẩn Obsidian Markdown**: File sử dụng cú pháp Markdown chuẩn kết hợp Mermaid diagrams và khối callouts. Người dùng có thể mở trực tiếp thư mục dự án bằng Obsidian Desktop ("Open folder as vault") để xem Knowledge Graph độc lập mà không bị lẫn lộn giữa các dự án trên VPS.
+- **Nguyên tắc Docs-as-Code**: Tài liệu đi liền với mã nguồn qua từng Git commit/PR. Không phụ thuộc vào thư mục toàn cục hay server MCP bên ngoài.
 
 ### 2.3. Cưỡng Chế Cấu Trúc Alert Chuẩn (Alert Callout Validation)
-- Tất cả các tài liệu Markdown được tạo ra (cả trong repo `specs/`, `readme.md`, `guide.md` lẫn trong Obsidian Vault) **BẮT BUỘC PHẢI CHỨA CÁC KHỐI ALERT CHUẨN**.
+- Tất cả các tài liệu Markdown được tạo ra (cả trong repo `specs/`, `readme.md`, `guide.md`) **BẮT BUỘC PHẢI CHỨA CÁC KHỐI ALERT CHUẨN**.
 - Agent phải tự validate, nếu chưa có thì bắt buộc phải bổ sung:
   - `> [!NOTE]`: Bối cảnh nghiệp vụ, kiến trúc nền tảng.
   - `> [!IMPORTANT]`: Tiêu chí Acceptance Criteria (AC), biến môi trường bắt buộc (.env).
   - `> [!WARNING]` / `> [!CAUTION]`: Cảnh báo rủi ro bảo mật, breaking change, lưu ý khi chạy database migration.
+
 
 ### 2.4. Cưỡng Chế Fullstack Smoke Verification (Nghiêm Cấm Unit Test Đối Phó)
 - QA Tester Agent **BẮT BUỘC** áp dụng skill `fullstack-smoke-verifier` thay vì chỉ viết unit test mock đơn thuần.
@@ -117,10 +119,12 @@ Hệ thống phối hợp đa tác tử (Multi-Agent Orchestration) chuẩn hóa
 
 Khi nhận lệnh với từ khóa `!team` hoặc tiếp nhận file `plan.md`:
 1. Kích hoạt vai trò **PO Agent** để tạo Feature Spec và xác nhận Gate 1 (đối chiếu CodeGraph nếu có).
-2. Chuyển giao sang **Architect Agent** thiết kế schema & API (kèm Mermaid chart).
+2. Chuyển giao sang **Architect Agent** thiết kế schema & API (kèm Mermaid chart) và lưu vào `specs/`.
 3. Kích hoạt **Fullstack Dev Agent** lập plan và xin duyệt Gate 2 trước khi code.
 4. Sau khi Dev code xong: Chạy `codegraph sync` để cập nhật knowledge graph.
 5. Kích hoạt **QA / Tester Agent** áp dụng skill **`fullstack-smoke-verifier`** (Route Guard redirect, Zero-Hardcode localhost scan, Responsive layout audit) trên Docker / Playwright.
 6. Kích hoạt **Security & DevOps Agent** kiểm tra an toàn dữ liệu và bảo mật.
-7. Xuất tài liệu vào **Obsidian Vault** (validate đầy đủ Alert callouts) và cập nhật `readme.md` / `guide.md`.
+7. Xuất tài liệu kỹ thuật vào thư mục **`specs/`** của dự án (validate đầy đủ Alert callouts theo chuẩn Obsidian) và cập nhật `readme.md` / `guide.md`.
+
+
 
