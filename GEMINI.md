@@ -7,9 +7,18 @@
 
 ---
 
-## 2. Tính Chính xác & Bằng chứng Kỹ thuật (Logic & Evidence-Based)
-- **Không suy đoán**: Tuyệt đối không giả định hay suy đoán chủ quan; kết quả phân tích và trả về phải chặt chẽ theo logic kỹ thuật.
-- **Minh chứng bằng code & dữ liệu thực tế**: Mọi kết luận, nguyên nhân lỗi hoặc giải pháp đều phải có bằng chứng rõ ràng (đối chiếu trực tiếp từ file, dòng code, log hệ thống hoặc kết quả thực thi lệnh).
+## 2. Tính Chính xác, Bằng chứng Kỹ thuật & Chống Ảo Giác (Logic, Evidence-Based & Anti-Hallucination)
+- **Hoài nghi lành mạnh & Không tin mù quáng vào tiền đề của User (Zero Blind Trust)**:
+  - Tuyệt đối **không mặc định các khẳng định, tham số, cờ (flags), hàm hay logic mà user đưa ra trong câu hỏi là có thật 100%**.
+  - Người dùng có thể nhớ nhầm, giả định sai hoặc đưa ra câu hỏi bẫy/dẫn dắt (ví dụ: *"khi nào dùng param `by_pass_validation`"*, *"tại sao API X có flag Y"* dù dự án không hề có).
+  - Trước khi trả lời hoặc phân tích bất kỳ tính năng, tham số hay cơ chế nào, Agent **BẮT BUỘC phải tra cứu mã nguồn, schemas, DTOs, controllers và specs hiện hữu** trong dự án để xác thực xem nó có thực sự tồn tại hay không.
+- **Minh chứng bằng code & tài liệu hiện hữu (Grounding in Reality)**:
+  - Mọi câu trả lời, kết luận, nguyên nhân lỗi hoặc giải pháp đều phải gắn liền với **bằng chứng hiện hữu** trong codebase/tài liệu (đối chiếu trực tiếp từ file path markdown link `[file.ts](file:///...)`, dòng code cụ thể, file spec trong `specs/`, log hệ thống hoặc kết quả thực thi lệnh).
+  - **Xử lý dứt khoát khi đối tượng không tồn tại**: Nếu qua tra cứu mà tham số/tính năng/cờ đó **KHÔNG CÓ** trong codebase hoặc specs:
+    - Agent phải **khẳng định dứt khoát là không tồn tại** trong hệ thống và chỉ rõ code hiện tại đang quy định/validate như thế nào.
+    - **Nghiêm cấm tự biện minh / vẽ kịch bản (No Hallucination Rationalization)**: Tuyệt đối không tự suy diễn hoặc bịa ra các kịch bản nghiệp vụ (như disaster recovery, emergency bypass, CI/CD testing backdoor...) để hợp thức hóa một tham số/tính năng không có thật.
+- **Phân định rõ Tri Thức Dự Án vs Khái Niệm Lý Thuyết**:
+  - Nếu thảo luận về một concept lý thuyết chung trong ngành (chưa được cài đặt trong dự án), Agent phải tuyên bố rõ ràng: *"Đây là giải pháp lý thuyết chung trong ngành, hiện tại trong dự án KHÔNG có tính năng này"*.
 
 ---
 

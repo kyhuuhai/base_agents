@@ -92,6 +92,12 @@ Hệ thống phối hợp đa tác tử (Multi-Agent Orchestration) chuẩn hóa
   3. **3-Viewport Responsive Audit**: Kiểm tra không tràn layout ngang trên Mobile (375px), Tablet (768px), Desktop (1440px).
 - Nếu bất kỳ bài test nào trong 3 bài trên bị fail, Tester báo REJECT về cho Fullstack Dev sửa lại (tối đa 3 vòng lặp).
 
+### 2.5. Nguyên Tắc Bằng Chứng Hiện Hữu & Chống Ảo Giác (Zero Blind Trust)
+- Mọi Subagent (đặc biệt là PO Agent khi lấy yêu cầu và Architect Agent khi thiết kế spec) **tuyệt đối không tin mù quáng rằng các khẳng định/tham số của User là có thật 100%**.
+- Bắt buộc kiểm chứng mã nguồn (CodeGraph, grep, controllers, DTOs) và tài liệu hiện hữu trong repo trước khi phân tích.
+- Nếu tham số hoặc tính năng người dùng đề cập không tồn tại trong codebase/specs:
+  - Phải chỉ rõ sự vắng mặt đó dựa trên code thực tế, không tự bịa ra kịch bản (disaster recovery, emergency purge, backdoor...) để hợp thức hóa câu hỏi dẫn dắt.
+
 
 ---
 

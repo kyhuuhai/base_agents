@@ -45,7 +45,7 @@ Kho lưu trữ và phân phối tập trung toàn bộ **Global Rules**, **Skill
 ## 1. Mục Tiêu & Triết Lý Vận Hành
 - **1-Command Setup**: Chỉ cần 1 lệnh script (`./install.sh`) để trang bị đầy đủ bộ não AI, MCP Tools và quy chuẩn dự án.
 - **Hỗ Trợ Đa Nền Tảng**: Vận hành trơn tru trên **macOS** lẫn **Linux VPS (CentOS 9, Amazon Linux ec2-user, Ubuntu)**.
-- **Quy Chuẩn Kỹ Sư 10 Năm Kinh Nghiệm**: Giao tiếp Tiếng Việt súc tích, logic & evidence-based, an toàn dữ liệu tuyệt đối.
+- **Quy Chuẩn Kỹ Sư 10 Năm Kinh Nghiệm**: Giao tiếp Tiếng Việt súc tích, logic & evidence-based, chống ảo giác (Zero Blind Trust), an toàn dữ liệu tuyệt đối.
 - **Workflow Thực Thi Theo Plan**: Kéo repo về ➔ Thả file `plan.md` ➔ AI Agent tự động triển khai từ A - Z theo đúng kiến trúc chuẩn.
 
 ---
