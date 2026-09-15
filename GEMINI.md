@@ -60,6 +60,22 @@
   - Ở cuối các câu trả lời hướng dẫn, bàn giao hoặc chào phiên làm việc, in ra tip ngắn gọn:
     > 💡 **Tip**: Sử dụng `!team` để gọi Multi Agent Skill
 
+---
+
+## 8. Quy Chuẩn Comment Code (Code Documentation & Clarity)
+- **Bắt buộc chú thích mục đích function**: Mọi hàm (function), phương thức (method), class, hook hoặc API route được viết mới hoặc sửa đổi BẮT BUỘC phải có khối chú thích JSDoc / Docstring (bằng Tiếng Việt hoặc Tiếng Anh rõ ràng).
+- **Cấu trúc chú thích chuẩn**:
+  - **Mục đích (Purpose)**: 1-2 câu tóm tắt chính xác chức năng nghiệp vụ của hàm (giải thích tại sao cần hàm này).
+  - **Tham số (@param)**: Ý nghĩa và kiểu dữ liệu của từng tham số đầu vào.
+  - **Kết quả trả về (@returns)**: Kết quả xuất ra là gì, trường hợp nào trả về null/false/error.
+  - **Ngoại lệ (@throws)**: Nêu rõ các ngoại lệ có thể xảy ra khi gọi hàm (nếu có).
+- **Phân tách bước xử lý (Step-by-Step Inline Comments)**: Đối với các hàm xử lý logic từ 10 dòng trở lên hoặc có nhiều bước (query DB, gọi 3rd party, parse dữ liệu), BẮT BUỘC phải chia tách và đánh số các bước bằng inline comment:
+  - `// Bước 1: Validate payload đầu vào`
+  - `// Bước 2: Kiểm tra cache trong Redis`
+  - `// Bước 3: Query dữ liệu gốc từ PostgreSQL`
+- **Tuyệt đối cấm code không chú thích**: Không bao giờ xuất các khối code dài phức tạp mà thiếu chú thích giải thích mục đích function khiến người dùng khó theo dõi.
+
+
 
 
 

@@ -53,7 +53,7 @@ Kho lưu trữ và phân phối tập trung toàn bộ **Global Rules**, **Skill
 ## 2. Cấu Trúc Repository
 
 ```
-├── GEMINI.md                          # 7 Quy tắc cốt lõi, Persona & Quy chuẩn Skills
+├── GEMINI.md                          # 8 Quy tắc cốt lõi, Persona & Quy chuẩn Skills
 ├── install.sh                         # Universal 1-Click Installer (macOS & CentOS 9/ec2-user)
 ├── .gitignore                         # Chặn rò rỉ .env, credentials, secrets
 ├── readme.md                          # Tổng quan dự án & Cấu trúc (File 1/2)
@@ -61,8 +61,11 @@ Kho lưu trữ và phân phối tập trung toàn bộ **Global Rules**, **Skill
 
 ├── prompts/
 │   └── technical_stack_blueprint.md   # Prompt mẫu & Đặc tả Tech Stack chuẩn
-├── skills/                            # Kho 15 Kỹ năng chuyên biệt
+├── skills/                            # Kho 18 Kỹ năng chuyên biệt
 │   ├── multi-agent-orchestrator/      # Điều phối 5 Subagents (PO, Architect, Dev, Tester, DevOps)
+│   ├── nestjs-backend-pro/            # Kiến trúc NestJS, BullMQ background queue, Cronjob, Webhook retry
+│   ├── database-architect-pro/        # Chuẩn hóa Postgres & Redis hằng ngày, connection pool, indexing, ACID
+│   ├── aws-core-services/             # Hạ tầng AWS cốt lõi: EC2, S3, CloudFront, RDS
 │   ├── fullstack-smoke-verifier/      # Kiểm thử E2E Playwright, Auth Route Guard, Zero-Hardcode, Responsive
 │   ├── google-apps-script-expert/     # Tự động hóa Google Sheets, Forms, Gmail, Clasp & Webhook
 │   ├── wordpress-php-debugger/        # Debug lỗi WSOD, tối ưu PHP-FPM pool, WP-CLI, Redis cache
@@ -86,14 +89,18 @@ Kho lưu trữ và phân phối tập trung toàn bộ **Global Rules**, **Skill
 ## 3. Danh Mục Kỹ Năng Tích Hợp (Skills Ecosystem)
 
 1. **`multi-agent-orchestrator`**: Vận hành 5 Subagents với 2 Human-in-the-loop Gates, CodeGraph, Obsidian Vault và cơ chế tự sửa lỗi tối đa 3 vòng lặp.
-2. **`fullstack-smoke-verifier`**: Kiểm thử tích hợp thực chiến Playwright (Route Guard Auth redirect, Zero-Hardcode `localhost:4000`, 3-Viewport Mobile/Tablet/Desktop).
-3. **`google-apps-script-expert`**: Tối ưu batch operations trên Google Sheets, deploy bằng clasp, webhook endpoint an toàn.
-4. **`wordpress-php-debugger`**: Xử lý lỗi trắng trang (WSOD), tính toán `pm.max_children` chuẩn theo RAM VPS, điều khiển qua `wp-cli`.
-5. **`nginx-server-pro`**: Cấu hình reverse proxy cho Node.js/Next.js, FastCGI micro-caching cho PHP-FPM, SSL Certbot và WebSocket.
-6. **`vps-devops-master`**: Security hardening SSH/Firewalld/Fail2ban, Systemd services, swap file, script backup tự động.
-7. **`website-builder-pro`**: Tối ưu điểm Google PageSpeed (LCP, CLS, INP), cấu trúc JSON-LD SEO, sitemap.
-8. **`docker-compose-creator`**: Chuẩn hóa orchestration đa container, volume persistence, isolated network và healthchecks.
-9. **Bộ kỹ năng UI/UX & Design**: `ui-ux-pro-max`, `design-system`, `ui-styling`, `brand`, `slides`, `design`, `banner-design`.
+2. **`nestjs-backend-pro`**: Thiết kế NestJS chuẩn enterprise, hàng đợi tác vụ nền BullMQ + Redis, Cron scheduling, retry gọi 3rd-party và xử lý webhook idempotency.
+3. **`database-architect-pro`**: Tối ưu hóa cơ sở dữ liệu hằng ngày với PostgreSQL 16 & Redis 7, connection pooling, indexing chiến lược, ACID transactions (kèm fallback MySQL, MongoDB).
+4. **`aws-core-services`**: Triển khai và tích hợp 4 dịch vụ đám mây cốt lõi: EC2, S3 (presigned URL), CloudFront CDN, và RDS (private subnet isolation).
+5. **`fullstack-smoke-verifier`**: Kiểm thử tích hợp thực chiến Playwright (Route Guard Auth redirect, Zero-Hardcode `localhost:4000`, 3-Viewport Mobile/Tablet/Desktop).
+6. **`google-apps-script-expert`**: Tối ưu batch operations trên Google Sheets, deploy bằng clasp, webhook endpoint an toàn.
+7. **`wordpress-php-debugger`**: Xử lý lỗi trắng trang (WSOD), tính toán `pm.max_children` chuẩn theo RAM VPS, điều khiển qua `wp-cli`.
+8. **`nginx-server-pro`**: Cấu hình reverse proxy cho Node.js/Next.js, FastCGI micro-caching cho PHP-FPM, SSL Certbot và WebSocket.
+9. **`vps-devops-master`**: Security hardening SSH/Firewalld/Fail2ban, Systemd services, swap file, script backup tự động.
+10. **`website-builder-pro`**: Tối ưu điểm Google PageSpeed (LCP, CLS, INP), cấu trúc JSON-LD SEO, sitemap.
+11. **`docker-compose-creator`**: Chuẩn hóa orchestration đa container, volume persistence, isolated network và healthchecks.
+12. **Bộ kỹ năng UI/UX & Design**: `ui-ux-pro-max`, `design-system`, `ui-styling`, `brand`, `slides`, `design`, `banner-design`.
+
 
 
 ---
