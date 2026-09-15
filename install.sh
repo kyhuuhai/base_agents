@@ -171,6 +171,7 @@ EOF
   echo -e "${GREEN}   - CodeGraph: ${CODEGRAPH_EXEC}${NC}"
   echo -e "${GREEN}   - Obsidian Vault: ${VAULT_DIR}${NC}"
   echo -e "${GREEN}   - Global Rules: ${GLOBAL_CONFIG_DIR}/GEMINI.md${NC}"
+  echo -e "${YELLOW}💡 Tip: Sử dụng '!team' để gọi Multi Agent Skill${NC}"
   echo -e "${BLUE}================================================================${NC}\n"
 }
 
@@ -217,7 +218,8 @@ install_project() {
   fi
 
   echo -e "${GREEN}✓ Đã copy GEMINI.md, .gitignore, specs/, skills và cấu hình CodeGraph vào ${TARGET_DIR}.${NC}"
-  echo -e "${GREEN}🎉 Dự án đã sẵn sàng làm việc với AI Agent!${NC}\n"
+  echo -e "${GREEN}🎉 Dự án đã sẵn sàng làm việc với AI Agent!${NC}"
+  echo -e "${YELLOW}💡 Tip: Sử dụng '!team' để gọi Multi Agent Skill${NC}\n"
 }
 
 print_usage() {

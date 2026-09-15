@@ -56,6 +56,10 @@
 - **Bắt buộc nạp runbook qua `view_file`**: Nếu tác vụ khớp với bất kỳ skill nào có sẵn, Agent PHẢI dùng tool `view_file` để đọc nội dung file `SKILL.md` của skill đó trước khi viết code hoặc phản hồi. Tuyệt đối không tự làm theo tri thức suy đoán mặc định khi đã có quy chuẩn sẵn trong repository.
 - **Minh bạch hóa hành động (Skill Announcement)**: Bất kỳ phản hồi nào có áp dụng skill đều PHẢI mở đầu bằng dòng thông báo:
   `[Skill Active: <tên_skill>] - <Mục đích & quy chuẩn áp dụng>`
+- **Tip hiển thị cho lập trình viên (Developer Onboarding Tip)**:
+  - Ở cuối các câu trả lời hướng dẫn, bàn giao hoặc chào phiên làm việc, in ra tip ngắn gọn:
+    > 💡 **Tip**: Sử dụng `!team` để gọi Multi Agent Skill
+
 
 
 
