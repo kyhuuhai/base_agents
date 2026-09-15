@@ -44,3 +44,16 @@
   - Nếu repository không có thư mục `.codegraph/`, tự động chuyển sang các công cụ tìm kiếm và đọc mã nguồn thông thường.
 - **Obsidian MCP**:
   - Hỗ trợ kết nối trực tiếp đến Obsidian Vault cục bộ qua MCP để đọc và tra cứu tài liệu kiến trúc, quy chuẩn hoặc ghi chú khi được yêu cầu.
+
+---
+
+## 7. Quy Chuẩn Kích Hoạt & Thực Thi Skills (Autonomous Routing)
+- **Tự động định tuyến (Intent & Domain Matching)**: Người dùng **không cần phải nhớ tên skill**. Trước khi thực thi bất kỳ tác vụ nào (hạ tầng, Docker, Nginx, VPS, UI/UX, Debug, Architecture, GAS, Scripting...), Agent BẮT BUỘC phải tự rà soát danh mục `<skills>` để tự động ghép nối đúng skill phù hợp theo ngữ cảnh bài toán.
+- **Lệnh tắt `!team` (Multi-Agent Orchestrator Shortcut)**:
+  - Bất cứ khi nào người dùng bắt đầu câu lệnh với tiền tố `!team` hoặc chứa từ khóa `!team` (ví dụ: `!team phát triển tính năng Auth`, `!team tối ưu API`), Agent BẮT BUỘC phải lập tức kích hoạt skill `multi-agent-orchestrator` (`[Skill Active: multi-agent-orchestrator]`).
+  - Toàn bộ quy trình sẽ chạy theo đúng cơ chế 5 Subagents (PO -> Architect -> Dev -> QA -> Security), luôn truy vấn CodeGraph và tự động xuất tài liệu ra Obsidian Vault kèm khối Alert chuẩn.
+- **Bắt buộc nạp runbook qua `view_file`**: Nếu tác vụ khớp với bất kỳ skill nào có sẵn, Agent PHẢI dùng tool `view_file` để đọc nội dung file `SKILL.md` của skill đó trước khi viết code hoặc phản hồi. Tuyệt đối không tự làm theo tri thức suy đoán mặc định khi đã có quy chuẩn sẵn trong repository.
+- **Minh bạch hóa hành động (Skill Announcement)**: Bất kỳ phản hồi nào có áp dụng skill đều PHẢI mở đầu bằng dòng thông báo:
+  `[Skill Active: <tên_skill>] - <Mục đích & quy chuẩn áp dụng>`
+
+
